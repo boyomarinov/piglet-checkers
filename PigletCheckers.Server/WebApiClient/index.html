@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Piglet Checkers</title>
+    <link href="../WebApiClient/styles/base.css" rel="stylesheet" />
+    <link href="../WebApiClient/styles/login.css" rel="stylesheet" />
+    <link href="../WebApiClient/styles/register.css" rel="stylesheet" />
+    <link href="../WebApiClient/styles/bootstrap.css" rel="stylesheet" />
+
+    <script src="../WebApiClient/scripts/external/jquery-2.0.2.js"></script>
+    <script src="../WebApiClient/scripts/external/bootstrap.js"></script>
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js"></script>
+    <script src="../WebApiClient/scripts/class-utils.js"></script>
+    <script src="../WebApiClient/scripts/http-requester.js"></script>
+    <script src="../WebApiClient/scripts/persisters.js"></script>
+    <script src="../WebApiClient/scripts/gamesListUI.js"></script>
+    <script src="../WebApiClient/scripts/controllers.js"></script>
+    <script src="../WebApiClient/scripts/external/pubnub.js"></script>
+</head>
+<body>
+    <div id="main-wrapper" class="container container-base">
+    </div>
+    <script>
+        var mainUIController = controllers.create();
+        mainUIController.loadUI("#main-wrapper");
+    </script>
+</body>
+</html>

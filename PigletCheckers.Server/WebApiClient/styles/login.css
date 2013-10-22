@@ -1,0 +1,13 @@
+﻿.login-form {
+    margin-left: 65px;
+}
+
+.login-form .text-error {
+    margin-top: 20px;
+}
+
+legend {
+    margin-right: -50px;
+    font-weight: bold;
+    color: #404040;
+}

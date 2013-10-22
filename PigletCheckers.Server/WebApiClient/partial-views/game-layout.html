@@ -1,0 +1,242 @@
+﻿<!--Main game layout-->
+<div id="game-wrapper">
+    <!--HEADER-->
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="#">Piglet Checkers</a>
+
+                <button id="logout-button" class="btn btn-danger pull-right">Logout <span id="nickname"></span></button>
+                <button id="scores-button" class="btn btn-info pull-right">Scores</button>
+            </div>
+        </div>
+    </div>
+
+    <!--CONTENT-->
+    <div id="content-wrapper" class="row">
+        <div class="span3">
+            <!--CREATE GAME-->
+            <div class="well well-large" id="create-game-wrapper">
+                <h3>Create Game</h3>
+                <form>
+                    <input type="text" class="input-medium" id="create-game-title" placeholder="Name" />
+                    <input type="password" class="input-medium" id="create-game-password" placeholder="Password" />
+                    <input type="submit" class="btn btn-primary" value="Create" />
+                </form>
+            </div>
+            <div id="open-games-container">
+                <h3>Open Games</h3>
+                <div id="open-games">
+                </div>
+                <!--<ul class="nav nav-tabs nav-stacked"></ul>-->
+            </div>
+        </div>
+        <div id="gameplay" class="span6">
+
+            <!--MAIN GAMEPLAY CONTAINER-->
+            <div id="gameplay-header">
+                <div id="black-user-info">
+                    <img src="images/black_piece.png" alt="black piece"/>
+                    <span>Black user</span>
+                </div>
+                <div id="white-user-info">
+                    <img src="images/white_piece.png" alt="white piece" />
+                    <span>White user</span>
+                </div>
+                <div>
+                    <span>Turns count: </span>
+                    <span id="turns-count">0</span>
+                </div>
+            </div>
+            <div id="game-container">
+                <div id="player-in-turn">
+                    <p></p>
+                </div>
+                <div id="board" class="container">
+                    <table id="board-table">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="span3">
+            <div id="active-games-container">
+                <h3>Active Games</h3>
+                <!--<ul class="nav nav-tabs nav-stacked"></ul>-->
+                <div id="active-games"></div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div id="chat-container" class="span12">
+            <h3>Chat</h3>
+            <div>
+                <input id="input" placeholder="Send message to your opponents" />
+            </div>
+           
+             <script>(function () {
+                var box = PUBNUB.$('box'),
+                    input = PUBNUB.$('input'),
+                    channel = 'chat';
+
+                var pubnubObj = PUBNUB.init({        
+                    'publish_key': 'pub-c-3805714d-9bb4-4f97-b0b2-7913c4d4c6da',
+                    'subscribe_key': 'sub-c-a4fe6ab8-04cd-11e3-a5e8-02ee2ddab7fe',
+                    'ssl': false
+                });
+
+                pubnubObj.ready();
+
+                var currentNickname = localStorage.getItem("nickname");
+                pubnubObj.subscribe({
+                    channel: 'chat',
+                    callback: function (text) { box.innerHTML = ('' + text).replace(/[<>]/g, '') + '<br>' + box.innerHTML; }
+                });
+
+                pubnubObj.bind('keyup', input, function (e) {
+                    (e.keyCode || e.charCode) === 13 && pubnubObj.publish({
+                        channel: channel, message: '[' + currentNickname + ']' + ' : ' + input.value, x: (input.value = '')
+                    });
+                });
+
+             })();
+             </script>
+
+            <pre id="box" class="pre-scrollable"></pre>
+        </div>
+    </div>
+    <div class="row">
+        <div id="messages-feed" class="span12">
+            <h3>Messages Feed</h3>
+
+            <pre id="messages-feed-box" class="pre-scrollable"></pre>
+        </div>
+    </div>
+</div>
+
+<!--Modal-->
+<div id="join-game-input" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="join-game-label" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="join-game-label">Enter game</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="game-password">Password</label>
+                <div class="controls">
+                    <input type="password" id="game-password" placeholder="Password">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button id="join-game-button" class="btn btn-primary">Join</button>
+    </div>
+</div>
+
+<!--Scores-->
+<div id="scores" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="scores-label" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="scores-label">Scores</h3>
+    </div>
+    <div class="modal-body">
+        <table id="scores-table"class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nickname</th>
+                    <th>Scores</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
